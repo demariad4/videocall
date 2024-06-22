@@ -9,7 +9,7 @@ print(f"[CONSOLE] Setup completed: \nIP: {sock.getsockname()[0]} \nPORT: {sock.g
 clients = []
 
 while True:
-    data, addr = sock.recvfrom(128)
+    data, addr = sock.recvfrom(16)
     print(f"[CONSOLE] Connection From: \n{addr[0]}\n{data.decode()}\n")
     clients.append(addr)
 

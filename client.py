@@ -28,4 +28,8 @@ def getPeer(server: tuple, name: str) -> tuple:
 
 
 server = ("192.168.1.206", 50002)
+
+#TODO check name length to don't exceed 16bytes
 getPeer(server, input("Name: "))
+
+
