@@ -10,7 +10,7 @@ clients = []
 
 while True:
     data, addr = sock.recvfrom(128)
-    print(f"[CONSOLE] Connection From: {addr}{data.decode()}")
+    print(f"[CONSOLE] Connection From: {addr[0]}{data.decode()}")
     clients.append(addr)
 
     # sending confirmation bit
