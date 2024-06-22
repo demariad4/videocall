@@ -2,7 +2,7 @@ import socket
 
 port = 50002
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(('0.0.0.0', port))
+sock.bind((socket.gethostbyname(socket.gethostname()), port))
 
 print(f"[CONSOLE] \tSetup completed \n\t\t\tIP:\t\t{sock.getsockname()[0]} \n\t\t\tPORT:\t{sock.getsockname()[1]}")
 
