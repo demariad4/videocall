@@ -4,7 +4,7 @@ port = 50002
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((socket.gethostbyname(socket.gethostname()), port))
 
-print(f"[CONSOLE] \tSetup completed \n\t\t\tIP:\t\t{sock.getsockname()[0]} \n\t\t\tPORT:\t{sock.getsockname()[1]}")
+print(f"[CONSOLE] Setup completed \nIP: {sock.getsockname()[0]} \nPORT: {sock.getsockname()[1]}")
 
 clients = []
 

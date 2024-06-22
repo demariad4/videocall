@@ -1,18 +1,21 @@
 import socket
 
 
-def getPeer(server: tuple) -> None:
+def getPeer(server: tuple, name: str) -> tuple:
+    """
+    Return the other peer infos as tuple
+    """
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(("0.0.0.0", 50001))
     sock.sendto(b"0", server)
 
-    while True:
-        data = sock.recv(1)
-        print(data)
-        if data == 1:
-            print("[CONSOLE] Connected to server, waiting...")
-            break
+    # Queuing for datas
+    data = sock.recv(1)
+    if data == b"1":
+        print("[CONSOLE] Connected to server, waiting...")
 
+    # Peer datas
     data = sock.recv(1024).decode()
     ip, port = data.split(":")
     ip = int(ip)
@@ -20,6 +23,8 @@ def getPeer(server: tuple) -> None:
 
     print(f"[CONSOLE] Got Peer: \nIP: {ip}\nPORT: {port}")
 
+    return ip, port
 
-server = ("", 50002)
+
+server = ("192.168.1.206", 50002)
 getPeer(server)
