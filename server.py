@@ -9,8 +9,8 @@ print(f"[CONSOLE] Setup completed \nIP: {sock.getsockname()[0]} \nPORT: {sock.ge
 clients = []
 
 while True:
-    data, addr = sock.recvfrom(1)
-    print(f"[CONSOLE] Connection From: {addr}")
+    data, addr = sock.recvfrom(128)
+    print(f"[CONSOLE] Connection From: {addr}{data.decode()}")
     clients.append(addr)
 
     # sending confirmation bit

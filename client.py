@@ -6,9 +6,10 @@ def getPeer(server: tuple, name: str) -> tuple:
     Return the other peer infos as tuple
     """
 
+    # Sending server infos
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(("0.0.0.0", 50001))
-    sock.sendto(b"0", server)
+    sock.sendto(name.encode(), server)
 
     # Queuing for datas
     data = sock.recv(1)
@@ -27,4 +28,4 @@ def getPeer(server: tuple, name: str) -> tuple:
 
 
 server = ("192.168.1.206", 50002)
-getPeer(server)
+getPeer(server, input("Name: "))
