@@ -41,7 +41,7 @@ def talkTo(sock, peerSocket) -> None:
     while True:
         msg = input("> ").encode()
         sock.sendto(msg, peerSocket)
-        if msg == b"0":
+        if msg == "0".encode():
             print("[CONSOLE] Disconnected\n")
             return
 
