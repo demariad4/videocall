@@ -31,6 +31,9 @@ def getPeer(server: tuple, name: str) -> tuple:
 def listenTo(sock, peerName) -> None:
     while True:
         data = sock.recv(128).decode()
+        if data == b"0":
+            print("[CONSOLE] Peer Disconnected\n")
+            return
         print(f"\r[{peerName}] : {data}\n> ", end="")
 
 
@@ -38,6 +41,9 @@ def talkTo(sock, peerSocket) -> None:
     while True:
         msg = input("> ").encode()
         sock.sendto(msg, peerSocket)
+        if msg == b"0":
+            print("[CONSOLE] Disconnected\n")
+            return
 
 
 # Getting peer infos
@@ -50,14 +56,10 @@ peerName = peer[2]
 # Punching hole
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(("0.0.0.0", 50001))
-sock.sendto(b'0', peerSocket)
+sock.sendto(b'1', peerSocket)
 
 
 listener = threading.Thread(target=listenTo, args=(sock, peerName))
 talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
-listener.start()
-talker.start()
-
-
-
-
+listener.run()
+talker.run()
