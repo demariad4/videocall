@@ -31,7 +31,7 @@ def getPeer(server: tuple, name: str) -> tuple:
 def listenTo(sock, peerName) -> None:
     while True:
         data = sock.recv(128).decode()
-        print(f"[{peerName}] : {data}")
+        print(f"\r[{peerName}] : {data}\n> ", end="")
 
 
 def talkTo(sock, peerSocket) -> None:
@@ -54,11 +54,9 @@ sock.sendto(b'0', peerSocket)
 
 
 listener = threading.Thread(target=listenTo, args=(sock, peerName))
-# talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
+talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
 listener.start()
-# talker.start()
-while True:
-    talkTo(sock, peerSocket)
+talker.start()
 
 
 
