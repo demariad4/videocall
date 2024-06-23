@@ -15,14 +15,14 @@ def getPeer(server: tuple, name: str) -> tuple:
     # Queuing for datas
     data = sock.recv(1)
     if data == b"1":
-        print("[CONSOLE] Connected to server, waiting...")
+        print("[CONSOLE] Connected to server, waiting...\n")
 
     # Peer datas
     data = sock.recv(128).decode()
     ip, port, name = data.split(":")
     port = int(port)
 
-    print(f"[CONSOLE] Got Peer: \nNAME: {name}\nIP: {ip}\nPORT: {port}")
+    print(f"[CONSOLE] Got Peer: \nNAME: {name}\nIP: {ip}\nPORT: {port}\n")
 
     return ip, port, name
 
@@ -50,11 +50,18 @@ peerName = peer[2]
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(("0.0.0.0", 50001))
 sock.sendto(b'0', peerSocket)
+sock.close()
+
+# Reopening socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 listener = threading.Thread(target=listenTo, args=(sock, peerName))
-talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
+# talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
 listener.start()
-talker.start()
+# talker.start()
+while True:
+    msg = input("> ").encode()
+    sock.sendto(msg, peerSocket)
 
 
 
