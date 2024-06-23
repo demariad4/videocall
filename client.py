@@ -31,7 +31,7 @@ def getPeer(server: tuple, name: str) -> tuple:
 def listenTo(sock, peerName) -> None:
     while True:
         data = sock.recv(128).decode()
-        if data == b"0":
+        if data == "0":
             print("[CONSOLE] Peer Disconnected\n")
             return
         print(f"\r[{peerName}] : {data}\n> ", end="")
