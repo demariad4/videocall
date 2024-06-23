@@ -11,7 +11,7 @@ clients = []
 while True:
     data, addr = sock.recvfrom(16)
     print(f"[CONSOLE] Connection From: \n{addr[0]}\n{data.decode()}\n")
-    clients.append(addr)
+    clients.append((addr, data.decode()))
 
     # sending confirmation bit
     sock.sendto(b"1", addr)
@@ -21,10 +21,12 @@ while True:
         break
 
 c1 = clients.pop()
-c1Addr, c1Port = c1
+c1Addr, c1Port = c1[0]
+c1Name = c1[1]
 c2 = clients.pop()
-c2Addr, c2Port = c2
+c2Addr, c2Port = c2[0]
+c2Name = c2[1]
 
-sock.sendto(f"{c1Addr}:{c1Port}".encode(), c2)
-sock.sendto(f"{c2Addr}:{c2Port}".encode(), c1)
+sock.sendto(f"{c1Addr}:{c1Port}:{c1Name}".encode(), c2)
+sock.sendto(f"{c2Addr}:{c2Port}:{c2Name}".encode(), c1)
 
