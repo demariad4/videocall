@@ -1,9 +1,10 @@
 import socket
-
+import threading
 
 def getPeer(server: tuple, name: str) -> tuple:
     """
-    Return the other peer infos as tuple
+    Return the other peer infos as tuple while connecting to server
+    (IP, PORT, NAME)
     """
 
     # Sending server infos
@@ -23,13 +24,38 @@ def getPeer(server: tuple, name: str) -> tuple:
 
     print(f"[CONSOLE] Got Peer: \nNAME: {name}\nIP: {ip}\nPORT: {port}")
 
-    return ip, port
+    return ip, port, name
 
 
+def listenTo(sock, peerName) -> None:
+    while True:
+        data = sock.recv(128).decode()
+        print(f"[{peerName}] : {data}")
+
+
+def talkTo(sock, peerSocket) -> None:
+    while True:
+        msg = input("> ").encode()
+        sock.sendto(msg, peerSocket)
+
+
+# Getting peer infos
 server = ("192.168.1.206", 50002)
+# TODO check name length to don't exceed 16bytes
+peer = getPeer(server, input("Name: "))
+peerSocket = (peer[0], peer[1])
+peerName = peer[2]
 
-#TODO check name length to don't exceed 16bytes
-x = getPeer(server, input("Name: "))
-print(x)
+# Punching hole
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(("0.0.0.0", 50001))
+sock.sendto(b'0', peerSocket)
+
+listener = threading.Thread(target=listenTo, args=(sock, peerName))
+talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
+listener.start()
+talker.start()
+
+
 
 
