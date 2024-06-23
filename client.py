@@ -33,7 +33,7 @@ def listenTo(sock, peerName) -> None:
         data = sock.recv(128).decode()
         if data == "0":
             print("[CONSOLE] Peer Disconnected\n")
-            return
+            listener.join()
         print(f"\r[{peerName}] : {data}\n> ", end="")
 
 
@@ -43,7 +43,8 @@ def talkTo(sock, peerSocket) -> None:
         sock.sendto(msg, peerSocket)
         if msg == "0".encode():
             print("[CONSOLE] Disconnected\n")
-            return
+            talker.join()
+
 
 
 # Getting peer infos
@@ -61,5 +62,5 @@ sock.sendto(b'1', peerSocket)
 
 listener = threading.Thread(target=listenTo, args=(sock, peerName))
 talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
-listener.run()
-talker.run()
+listener.start()
+talker.start()
