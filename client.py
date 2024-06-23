@@ -1,6 +1,7 @@
 import socket
 import threading
 
+
 def getPeer(server: tuple, name: str) -> tuple:
     """
     Return the other peer infos as tuple while connecting to server
@@ -50,18 +51,14 @@ peerName = peer[2]
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(("0.0.0.0", 50001))
 sock.sendto(b'0', peerSocket)
-sock.close()
 
-# Reopening socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 listener = threading.Thread(target=listenTo, args=(sock, peerName))
 # talker = threading.Thread(target=talkTo, args=(sock, peerSocket))
 listener.start()
 # talker.start()
 while True:
-    msg = input("> ").encode()
-    sock.sendto(msg, peerSocket)
+    talkTo(sock, peerSocket)
 
 
 
